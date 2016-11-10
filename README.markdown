@@ -47,8 +47,6 @@ Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/
   * [Failing Guards](#failing-guards)
 * [Semicolons](#semicolons)
 * [Parentheses](#parentheses)
-* [Copyright Statement](#copyright-statement)
-* [Smiley Face](#smiley-face)
 * [Style Guide License](#style-guide-license)
 * [Credits](#credits)
 
@@ -282,10 +280,10 @@ Keep imports minimal. For example, don't import `UIKit` when importing `Foundati
 
 ## Spacing
 
-* Indent using 2 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
+* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
 
   ![Xcode indent settings](screens/indentation.png)
-  
+
   ![Xcode Project settings](screens/project_settings.png)
 
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
@@ -295,7 +293,8 @@ Keep imports minimal. For example, don't import `UIKit` when importing `Foundati
 ```swift
 if user.isHappy {
   // Do something
-} else {
+}
+else {
   // Do something else
 }
 ```
@@ -327,6 +326,24 @@ class TestDatabase: Database {
 class TestDatabase : Database {
   var data :[String:CGFloat] = ["A" : 1.2, "B":3.2]
 }
+```
+
+* There should be exactly one blank space surrounding operators, after commas, after opening braces, and before closing braces to aid in visual clarity.
+
+**Preferred**
+```swift
+let x = (y + z) * 2 - width
+let x = [a, b, c]
+let x = a && b
+let values = numbers.map{ $0 * 2 }
+```
+
+**Not Preferred**
+```swift
+let x = (y+z)*2-width
+let x = [a,b,c]
+let x = a&&b
+let values = numbers.map{$0*2}
 ```
 
 * No trailing whitespaces at the ends of lines.
@@ -410,7 +427,7 @@ class BoardLocation {
   init(row: Int, column: Int) {
     self.row = row
     self.column = column
-    
+
     let closure = {
       print(self.row)
     }
@@ -445,7 +462,7 @@ Mark classes `final` when inheritance is not intended. Example:
 ```swift
 // Turn any generic type into a reference type using this Box class.
 final class Box<T> {
-  let value: T 
+  let value: T
   init(_ value: T) {
     self.value = value
   }
@@ -519,9 +536,9 @@ Chained methods using trailing closures should be clear and easy to read in cont
 let value = numbers.map { $0 * 2 }.filter { $0 % 3 == 0 }.index(of: 90)
 
 let value = numbers
-   .map {$0 * 2}
-   .filter {$0 > 50}
-   .map {$0 + 10}
+   .map { $0 * 2 }
+   .filter { $0 > 50 }
+   .map { $0 + 10 }
 ```
 
 ## Types
@@ -553,7 +570,7 @@ You can define constants on a type rather than an instance of that type using ty
 **Preferred:**
 ```swift
 enum Math {
-  static let e  = 2.718281828459045235360287
+  static let e = 2.718281828459045235360287
   static let root2 = 1.41421356237309504880168872
 }
 
@@ -564,7 +581,7 @@ let hypotenuse = side * Math.root2
 
 **Not Preferred:**
 ```swift
-let e  = 2.718281828459045235360287  // pollutes global namespace
+let e = 2.718281828459045235360287  // pollutes global namespace
 let root2 = 1.41421356237309504880168872
 
 let hypotenuse = side * root2 // what is root2?
@@ -604,7 +621,7 @@ var subview: UIView?
 var volume: Double?
 
 // later on...
-if let subview = subview, volume = volume {
+if let subview = subview, let volume = volume {
   // do something with unwrapped subview and volume
 }
 ```
@@ -752,8 +769,8 @@ Extend object lifetime using the `[weak self]` and `guard let strongSelf = self 
 **Preferred**
 ```swift
 resource.request().onComplete { [weak self] response in
-  guard let strongSelf = self else { 
-    return 
+  guard let strongSelf = self else {
+    return
   }
   let model = strongSelf.updateModel(response)
   strongSelf.updateUI(model)
@@ -843,15 +860,15 @@ When coding with conditionals, the left hand margin of the code should be the "g
 ```swift
 func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies {
 
-  guard let context = context else { 
-    throw FFTError.noContext 
+  guard let context = context else {
+    throw FFTError.noContext
   }
-  guard let inputData = inputData else { 
-    throw FFTError.noInputData 
+  guard let inputData = inputData else {
+    throw FFTError.noInputData
   }
-    
+
   // use context and input to compute the frequencies
-    
+
   return frequencies
 }
 ```
@@ -880,10 +897,10 @@ When multiple optionals are unwrapped either with `guard` or `if let`, minimize 
 
 **Preferred:**
 ```swift
-guard let number1 = number1, 
-      let number2 = number2, 
-      let number3 = number3 else { 
-  fatalError("impossible") 
+guard let number1 = number1,
+      let number2 = number2,
+      let number3 = number3 else {
+  fatalError("impossible")
 }
 // do something with numbers
 ```
@@ -950,46 +967,6 @@ if (name == "Hello") {
 }
 ```
 
-## Copyright Statement
-
-The following copyright statement should be included at the top of every source
-file:
-
-    /**
-     * Copyright (c) 2016 Razeware LLC
-     *
-     * Permission is hereby granted, free of charge, to any person obtaining a copy
-     * of this software and associated documentation files (the "Software"), to deal
-     * in the Software without restriction, including without limitation the rights
-     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-     * copies of the Software, and to permit persons to whom the Software is
-     * furnished to do so, subject to the following conditions:
-     *
-     * The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software.
-     *
-     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-     * THE SOFTWARE.
-     */
-
-## Smiley Face
-
-Smiley faces are a very prominent style feature of the raywenderlich.com site! It is very important to have the correct smile signifying the immense amount of happiness and excitement for the coding topic. The closing square bracket `]` is used because it represents the largest smile able to be captured using ASCII art. A closing parenthesis `)` creates a half-hearted smile, and thus is not preferred.
-
-**Preferred:**
-```
-:]
-```
-
-**Not Preferred:**
-```
-:)
-```  
 
 ## Style Guide License
 
@@ -1020,7 +997,7 @@ THE SOFTWARE.
 ## Credits
 
 [Ray Fix](https://github.com/rayfix) currently maintains this style guide.
-It is a collaborative effort from the most stylish raywenderlich.com team members and its community: 
+It is a collaborative effort from the most stylish raywenderlich.com team members and its community:
 
 * [Jawwad Ahmad](https://github.com/jawwad)
 * [Soheil Moayedi Azarpour](https://github.com/moayes)
