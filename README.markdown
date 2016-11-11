@@ -163,16 +163,16 @@ let myClass = MyModule.UsefulClass()
 
 ### Selectors
 
-Selectors are Obj-C methods that act as handlers for many Cocoa and Cocoa Touch APIs. Prior to Swift 2.2, they were specified using type unsafe strings. This now causes a compiler warning. The "Fix it" button replaces these strings with the **fully qualified** type safe selector. Often, however, you can use context to shorten the expression. This is the preferred style.
+Selectors are Obj-C methods that act as handlers for many Cocoa and Cocoa Touch APIs. Prior to Swift 2.2, they were specified using type unsafe strings. This now causes a compiler warning. The "Fix it" button replaces these strings with the **fully qualified** type safe selector. Though the context can be used to shorten the expression, being more explicit is preferred.
 
 **Preferred:**
 ```swift
-let sel = #selector(viewDidLoad)
+let sel = #selector(ViewController.viewDidLoad)
 ```
 
 **Not Preferred:**
 ```swift
-let sel = #selector(ViewController.viewDidLoad)
+let sel = #selector(viewDidLoad)
 ```
 
 ### Generics
@@ -209,7 +209,22 @@ let colour = "red"
 
 ## Code Organization
 
-Use extensions to organize your code into logical blocks of functionality. Each extension should be set off with a `// MARK: -` comment to keep things well-organized.
+Use extensions to organize your code into logical blocks of functionality. Each extension should be set off with a `// MARK: -` comment to keep things well-organized. Private methods should be grouped together in a private class extension.
+
+**Preferred**
+```swift
+private extension MyViewController {
+  func methodName() {}
+}
+```
+
+**Not Preferred**
+```swift
+class MyViewController {
+  private func methodName() {}
+}
+```
+
 
 ### Protocol Conformance
 
@@ -256,11 +271,6 @@ override func didReceiveMemoryWarning() {
   // Dispose of any resources that can be recreated.
 }
 
-override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-   // #warning Incomplete implementation, return the number of sections
-   return 1
-}
-
 override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
   // #warning Incomplete implementation, return the number of rows
   return Database.contacts.count
@@ -274,18 +284,14 @@ override func tableView(tableView: UITableView, numberOfRowsInSection section: I
   return Database.contacts.count
 }
 ```
+
 ### Minimal Imports
 
 Keep imports minimal. For example, don't import `UIKit` when importing `Foundation` will suffice.
 
 ## Spacing
 
-* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
-
-  ![Xcode indent settings](screens/indentation.png)
-
-  ![Xcode Project settings](screens/project_settings.png)
-
+* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project Settings.
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
 * Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.
 
@@ -852,6 +858,7 @@ while i < attendeeList.count {
   i += 1
 }
 ```
+
 ## Golden Path
 
 When coding with conditionals, the left hand margin of the code should be the "golden" or "happy" path. That is, don't nest `if` statements. Multiple return statements are OK. The `guard` statement is built for this.
